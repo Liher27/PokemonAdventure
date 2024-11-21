@@ -7,9 +7,10 @@ Programa para jugar un videojuego basado en pokemon. Este juego combina dos de m
    
    en la ruta en la que se encuentre el archivo
 ```bash
-java -jar CuboSeMueveLoool.jar
+java -jar PokemonAdventure.jar
 ```
 3. El programa se ejecutara y podras utilizarlo sin preocupación.
 
 ## Controles
 El personaje se controla tanto con W,A,S,D, como con las flechas direccionales.
+Por otra parte, los combates se controlan con el ratón.
