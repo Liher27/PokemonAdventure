@@ -1,5 +1,5 @@
-# Sprites en movimiento
-Programa para comprobar como funcionan los cambios de sprites y el movimiento de un personaje en videojuegos antiguos, con código descrito en mensajes detallados.
+# POKEMON ADVENTURE
+Programa para jugar un videojuego basado en pokemon. Este juego combina dos de mis anteriores repositorios en los que se podrá explorar un mapa y además se podrá combatir.
 
 ## Descarga y ejecucion del archivo .jar
 1. Para ejecutar el programa sin necesidad de exportar el codigo y requerir de eclipse, tendremos que descargarnos el archivo en el apartado de "releases"
