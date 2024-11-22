@@ -4,7 +4,6 @@ import java.util.Random;
 
 import main.manager.pojos.Character;
 import main.panel.MainPanel;
-import main.panel.MainWindow;
 import pokemonFight.manager.StatusSingleton;
 
 public class CollisionDetector {
@@ -15,7 +14,7 @@ public class CollisionDetector {
 		this.gamePanel = gamePanel;
 	}
 
-	public void checkHitBox(Character character) {
+	public void checkHitBox(Character character) throws InterruptedException {
 		// Definimos las distancias de los lados del rectangulo de nuestra hitbox (al
 		// ser el sprite(CharacterWorldX/Y) mayor que nuestra hitbox(charcterHitBox),
 		// tenemos que hacer unos calculos).
@@ -102,12 +101,12 @@ public class CollisionDetector {
 		}
 	}
 
-	private void pokemonAppear() {
+	private void pokemonAppear() throws InterruptedException {
 		int probability = 2;
 		int encounterRatio = new Random().nextInt(187);
 		if (probability > encounterRatio) {
+			// StatusSingleton.getInstance().getMainPanel().gameThread.suspend();
 			StatusSingleton.getInstance().getMainWindow().setFightPanel();
-			// Aqui irá la logica del combate cuando se encuentre con un pokemon
 		}
 	}
 

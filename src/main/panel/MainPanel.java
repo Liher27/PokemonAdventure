@@ -32,7 +32,7 @@ public class MainPanel extends JPanel implements Runnable {
 	private static final long serialVersionUID = 1L;
 
 	public KeyBoard keyBoard = null;
-	private Thread gameThread = null; // Hilo sobre el cual correra el juego
+	public Thread gameThread = null; // Hilo sobre el cual correra el juego
 	public PlayerManager player = null;
 	public TileManager tileManager = null;
 	public CollisionDetector collisionDetector = null;
@@ -41,6 +41,7 @@ public class MainPanel extends JPanel implements Runnable {
 	private List<Pokemon> allyPokemonTeam = null;
 	// definir un sprite de 16x16 bloques
 	private final int originalTileSize = 16;
+	public boolean exploring = false;
 
 	// tamaño de escalada para los bloques de sprites, ya que un sprite de 16x16
 	// se vería demasiado pequeño en las pantallas de 1920x1080
@@ -80,6 +81,7 @@ public class MainPanel extends JPanel implements Runnable {
 		this.addKeyListener(keyBoard);
 		this.setFocusable(true);
 		this.requestFocusInWindow();
+		StatusSingleton.getInstance().setMainPanel(this);
 
 		startGameThread();
 	}
@@ -98,8 +100,8 @@ public class MainPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
-
-		while (gameThread != null) {
+		exploring = true;
+		while (exploring) {
 
 			// Aquí se ejecutará el bucle principal sobre el que el juego se inicia,
 			// mecanica basica sobre la cual funcionan muchos juegos.
@@ -145,7 +147,13 @@ public class MainPanel extends JPanel implements Runnable {
 	 * se le pase por teclado
 	 */
 	private void update() {
-		player.updateSprite();
+		try {
+			player.updateSprite();
+		} catch (InterruptedException e) {
+			JOptionPane.showMessageDialog(null, "Error parando el hilo", "Error parando el hilo",
+					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
+		}
 	}
 
 	/**
