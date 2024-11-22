@@ -23,7 +23,7 @@ public class Pokemon {
 
 	public Pokemon(int pokemonLvl, int pokemonHP, int pokemonSpeed, int pokemonDefense, int pokemonAttackStat,
 			String pokemonName, Attack pokemonAttack1, Attack pokemonAttack2, Attack pokemonAttack3,
-			Attack pokemonAttack4,  BufferedImage pokemonFront, BufferedImage pokemonBack) {
+			Attack pokemonAttack4, BufferedImage pokemonFront, BufferedImage pokemonBack) {
 		this.pokemonLvl = pokemonLvl;
 		this.pokemonHP = pokemonHP;
 		this.pokemonSpeed = pokemonSpeed;
@@ -87,9 +87,22 @@ public class Pokemon {
 	}
 
 	public Attack getPokemonAttack(int attack) {
-		return pokemonAttack1;
+		switch (attack) {
+
+		case 0:
+			return pokemonAttack1;
+		case 1:
+			return pokemonAttack2;
+		case 2:
+			return pokemonAttack3;
+		case 3:
+			return pokemonAttack4;
+
+		default:
+			return pokemonAttack1;
+		}
 	}
-	
+
 	public Attack getPokemonAttack1() {
 		return pokemonAttack1;
 	}

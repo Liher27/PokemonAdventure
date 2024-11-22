@@ -82,12 +82,23 @@ public class FightManager {
 			setupAttackButtons(allyPokemonTeam.get(0), isAllyTurn);
 		} else {
 			// Cambiar por ataque random de pokemon salvaje
-			wildPokemonAttack();
+			wildPokemonAttack(isAllyTurn);
 		}
 	}
 
-	private void wildPokemonAttack() {
-		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(4)), false);
+	private void wildPokemonAttack(boolean isAlly) {
+		int moveCount = 0;
+		if (wildPokemon.getPokemonAttack1() != null)
+			moveCount++;
+		if (wildPokemon.getPokemonAttack2() != null)
+			moveCount++;
+		if (wildPokemon.getPokemonAttack3() != null)
+			moveCount++;
+		if (wildPokemon.getPokemonAttack3() != null)
+			moveCount++;
+
+		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(moveCount)), isAlly);
+		turn = !turn;
 	}
 
 	private void setupAttackButtons(Pokemon pokemon, boolean isAlly) {
@@ -178,8 +189,9 @@ public class FightManager {
 		if (wildPokemon.getPokemonHP() <= 0) {
 			JOptionPane.showMessageDialog(null, "El equipo local ha ganado el combate!!!", "Enhorabuena!!!",
 					JOptionPane.INFORMATION_MESSAGE);
+			StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
+
 			StatusSingleton.getInstance().getMainWindow().setMainPanel();
-			System.exit(0);
 			return true;
 		}
 
@@ -193,7 +205,7 @@ public class FightManager {
 				JOptionPane.showMessageDialog(null, "El enemigo ha debilitado a todos tus pokemon...", "GAME OVER",
 						JOptionPane.INFORMATION_MESSAGE);
 				StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
-				
+
 				StatusSingleton.getInstance().getMainWindow().setMainPanel();
 				return true;
 			}

@@ -57,8 +57,6 @@ public class MainWindow extends JFrame {
 			}
 			mainPanel.setVisible(false);
 			fightPanel.setVisible(true);
-			// StatusSingleton.getInstance().getMainPanel().gameThread.resume();
-
 			addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
