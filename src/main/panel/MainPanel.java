@@ -71,15 +71,13 @@ public class MainPanel extends JPanel implements Runnable {
 		player = new PlayerManager(keyBoard, this);
 		tileManager = new TileManager(this);
 		collisionDetector = new CollisionDetector(this);
-		allyPokemonTeam = selectTeamPokemons("Escoge los pokemon para tu equipo");
+		allyPokemonTeam = selectTeamPokemons("Escoge los pokemon para tu equip	o");
 		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
 
 		this.setPreferredSize(new Dimension(800, 600));
 		this.setBackground(Color.white);
 		this.setDoubleBuffered(true); // opcional, es para un mejor renderizado de los graficos del panel
 		this.addKeyListener(keyBoard);
-		this.setFocusable(true);
-		this.requestFocusInWindow();
 		StatusSingleton.getInstance().setMainPanel(this);
 
 		startGameThread();
@@ -88,7 +86,7 @@ public class MainPanel extends JPanel implements Runnable {
 	/**
 	 * Crea el hilo y se inicia
 	 */
-	private void startGameThread() {
+	public void startGameThread() {
 		// instanciar el hilo
 		gameThread = new Thread(this);
 		gameThread.start();
@@ -99,17 +97,21 @@ public class MainPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
+		this.setFocusable(true);
+		this.requestFocusInWindow();
 		exploring = true;
-		while (exploring) {
-			// Aquí se ejecutará el bucle principal sobre el que el juego se inicia,
-			// mecanica basica sobre la cual funcionan muchos juegos.
+		while (null != gameThread) {
+			while (exploring) {
+				// Aquí se ejecutará el bucle principal sobre el que el juego se inicia,
+				// mecanica basica sobre la cual funcionan muchos juegos.
 
-			// Primero se refresca la informacion, y después se pinta la informacion
-			// recogida.
+				// Primero se refresca la informacion, y después se pinta la informacion
+				// recogida.
 
-			update();
-			repaint();
-			refrescoPantalla();
+				update();
+				repaint();
+				refrescoPantalla();
+			}
 		}
 	}
 
@@ -133,7 +135,7 @@ public class MainPanel extends JPanel implements Runnable {
 			nextDrawTime = nextDrawTime + drawInterval;
 
 		} catch (InterruptedException e) {
-			
+
 		}
 	}
 
@@ -142,8 +144,8 @@ public class MainPanel extends JPanel implements Runnable {
 	 * se le pase por teclado
 	 */
 	private void update() {
-			player.updateSprite();
-	
+		player.updateSprite();
+
 	}
 
 	/**

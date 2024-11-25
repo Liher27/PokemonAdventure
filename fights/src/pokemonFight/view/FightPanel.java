@@ -146,7 +146,7 @@ public class FightPanel extends JPanel {
 
 		JLabel fightBackgroundLbl = new JLabel("");
 		fightBackgroundLbl.setIcon(getBackgroundImage());
-		fightBackgroundLbl.setBounds(0, 11, 800, 443);
+		fightBackgroundLbl.setBounds(0, 0, 800, 454);
 		add(fightBackgroundLbl);
 
 		decissionTextLbl = new JLabel();

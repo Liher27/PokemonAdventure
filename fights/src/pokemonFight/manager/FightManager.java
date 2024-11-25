@@ -59,11 +59,12 @@ public class FightManager {
 	public void trainerBattle() throws IOException {
 		createWildPokemon();
 		loadInfo();
+
 		battleWorker = new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() {
 				boolean continueBattle = true;
-				do {
+				while (continueBattle) {
 					if (battleEnded()) {
 						continueBattle = false;
 					}
@@ -73,13 +74,13 @@ public class FightManager {
 					} catch (InterruptedException e) {
 						break;
 					}
-				} while (continueBattle);
+				}
 				return null;
 			}
 		};
+		
 		battleWorker.execute();
 	}
-
 
 	private boolean battleEnded() {
 		if (wildPokemon.getPokemonHP() <= 0) {
@@ -110,7 +111,7 @@ public class FightManager {
 		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
 		return false;
 	}
-	
+
 	private void handleTurn(boolean isAllyTurn) {
 		if (isAllyTurn) {
 			fightPanel.decissionTextLbl.setText("¿Qué debería hacer " + allyPokemonTeam.get(0).getPokemonName() + "?");
@@ -203,7 +204,6 @@ public class FightManager {
 			}
 		}
 	}
-	
 
 	private void wildPokemonAttack(boolean isAlly) {
 		int moveCount = 0;
@@ -219,7 +219,6 @@ public class FightManager {
 		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(moveCount)), isAlly);
 		turn = !turn;
 	}
-
 
 	/**
 	 * Refresca la pantalla con nueva información de los pokemon.

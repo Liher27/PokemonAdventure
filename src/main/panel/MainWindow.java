@@ -33,7 +33,6 @@ public class MainWindow extends JFrame {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "No se ha podido cargar el panel de aventura correctamente", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
 			System.exit(0);
 		}
 		pack();
@@ -46,10 +45,10 @@ public class MainWindow extends JFrame {
 	public void setMainPanel() {
 		// Primero, paramos el hilo del combate y ocultamos el panel
 		fightPanel.setVisible(false);
-		fightPanel.stopBattle();
 
 		// despues, mostramos el siguiente panel y reanudamos el hilo
 		mainPanel.setVisible(true);
+		mainPanel.run();
 	}
 
 	public void setFightPanel() {
@@ -63,7 +62,9 @@ public class MainWindow extends JFrame {
 			}
 			// Primero, ocultamos un panel, paramos el hilo, y reanudamos el hilo anterior,
 			// y mostramos el panel
+			mainPanel.exploring = false;
 			mainPanel.setVisible(false);
+			
 			fightPanel.fightManager.trainerBattle();
 			fightPanel.setVisible(true);
 

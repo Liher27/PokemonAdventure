@@ -33,19 +33,14 @@ public class PlayerManager extends Character {
 		entityWorldX = gamePanel.tileSize * 10;
 		entityWorldY = gamePanel.tileSize * 9;
 
-		playerPositionXInPanel = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2; // 360
-		playerPositionYInPanel = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2; // 264
+		playerPositionXInPanel = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
+		playerPositionYInPanel = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
 
 		// Definimos cual va a ser la hitbox de nuestro personaje
-
 		speed = 4;
 		direction = "down";
 
-		try {
-			getPlayerImage();
-		} catch (IOException e) {
-			throw e;
-		}
+		getPlayerImage();
 	}
 
 	/**
@@ -54,31 +49,25 @@ public class PlayerManager extends Character {
 	 * @throws IOException
 	 */
 	public void getPlayerImage() throws IOException {
-		try {
-			redStill = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStill.png"));
-			redMovesDown1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMoves1.png"));
-			redMovesDown2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMoves2.png"));
-			redStillLeft = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillLeft.png"));
-			redMovesLeft = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesLeft.png"));
-			redStillRight = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillRight.png"));
-			redMovesRight = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesRight.png"));
-			redStillUp = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillUp.png"));
-			redMovesUp1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesUp1.png"));
-			redMovesUp2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesUp2.png"));
-			waterPokemon1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/waterPokemon1.png"));
-			waterPokemon2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/waterPokemon2.png"));
-
-		} catch (IOException e) {
-			throw e;
-		}
+		redStill = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStill.png"));
+		redMovesDown1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMoves1.png"));
+		redMovesDown2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMoves2.png"));
+		redStillLeft = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillLeft.png"));
+		redMovesLeft = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesLeft.png"));
+		redStillRight = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillRight.png"));
+		redMovesRight = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesRight.png"));
+		redStillUp = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillUp.png"));
+		redMovesUp1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesUp1.png"));
+		redMovesUp2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesUp2.png"));
+		waterPokemon1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/waterPokemon1.png"));
+		waterPokemon2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/waterPokemon2.png"));
 	}
 
 	/**
 	 * Para hacer que el player se mueva en una direccion u otra
-	 * @throws InterruptedException 
+	 * 
 	 */
 	public void updateSprite() {
-
 		if (keyBoard.upPressed == true) {
 			direction = "up";
 		} else if (keyBoard.downPressed == true) {
@@ -90,7 +79,6 @@ public class PlayerManager extends Character {
 		} else {
 			direction = null;
 		}
-
 		spriteCounter++;
 
 		// Para comprobar si nuestro personaje ha chocado contra una pared o no, le
@@ -118,9 +106,7 @@ public class PlayerManager extends Character {
 				}
 			}
 		}
-
 		wrapForSpriteMovement();
-
 	}
 
 	/**
@@ -128,7 +114,6 @@ public class PlayerManager extends Character {
 	 * otra ...
 	 */
 	private void wrapForSpriteMovement() {
-
 		if (spriteCounter > 10) {
 			if (spriteChanger == 1) {
 				spriteChanger = 2;
@@ -139,7 +124,6 @@ public class PlayerManager extends Character {
 			}
 			spriteCounter = 0;
 		}
-
 	}
 
 	/**
@@ -212,7 +196,6 @@ public class PlayerManager extends Character {
 
 			}
 		}
-
 		graphics2D.drawImage(sprite, playerPositionXInPanel, playerPositionYInPanel, gamePanel.tileSize,
 				gamePanel.tileSize, null);
 	}
