@@ -77,7 +77,7 @@ public class PlayerManager extends Character {
 	 * Para hacer que el player se mueva en una direccion u otra
 	 * @throws InterruptedException 
 	 */
-	public void updateSprite() throws InterruptedException {
+	public void updateSprite() {
 
 		if (keyBoard.upPressed == true) {
 			direction = "up";

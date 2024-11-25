@@ -34,12 +34,14 @@ public class FightManager {
 		fightPanel = StatusSingleton.getInstance().getFightPanel();
 
 		allyPokemonTeam = StatusSingleton.getInstance().getPokemonTeam();
+	}
 
+	public void createWildPokemon() throws IOException {
 		wildPokemon = new PokemonManager().getPokemons().get(new Random().nextInt(151));
 
-		turn = allyPokemonTeam.get(0).getPokemonSpeed() >= wildPokemon.getPokemonSpeed();
-
 		StatusSingleton.getInstance().setWildPokemon(wildPokemon);
+
+		turn = allyPokemonTeam.get(0).getPokemonSpeed() >= wildPokemon.getPokemonSpeed();
 	}
 
 	public void loadInfo() throws NullPointerException, IOException {
@@ -54,20 +56,22 @@ public class FightManager {
 		new ImageManager().loadImages();
 	}
 
-	public void trainerBattle() {
+	public void trainerBattle() throws IOException {
+		createWildPokemon();
+		loadInfo();
 		battleWorker = new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() {
 				boolean continueBattle = true;
 				do {
-					SwingUtilities.invokeLater(() -> handleTurn(turn));
 					if (battleEnded()) {
 						continueBattle = false;
 					}
+					SwingUtilities.invokeLater(() -> handleTurn(turn));
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(10);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						break;
 					}
 				} while (continueBattle);
 				return null;
@@ -76,28 +80,44 @@ public class FightManager {
 		battleWorker.execute();
 	}
 
+
+	private boolean battleEnded() {
+		if (wildPokemon.getPokemonHP() <= 0) {
+			JOptionPane.showMessageDialog(null, "El equipo local ha ganado el combate!!!", "Enhorabuena!!!",
+					JOptionPane.INFORMATION_MESSAGE);
+			StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
+
+			StatusSingleton.getInstance().getMainWindow().setMainPanel();
+			return true;
+		}
+
+		if (allyPokemonTeam.get(0).getPokemonHP() <= 0) {
+			if (allyPokemonTeam.size() > 1) {
+				allyPokemonTeam.remove(0);
+				fightPanel.changePokemon(allyPokemonTeam);
+				refreshOverlayData(true);
+				turn = !turn;
+			} else {
+				JOptionPane.showMessageDialog(null, "El enemigo ha debilitado a todos tus pokemon...", "GAME OVER",
+						JOptionPane.INFORMATION_MESSAGE);
+				StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
+
+				StatusSingleton.getInstance().getMainWindow().setMainPanel();
+
+				return true;
+			}
+		}
+		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
+		return false;
+	}
+	
 	private void handleTurn(boolean isAllyTurn) {
 		if (isAllyTurn) {
 			fightPanel.decissionTextLbl.setText("¿Qué debería hacer " + allyPokemonTeam.get(0).getPokemonName() + "?");
 			setupAttackButtons(allyPokemonTeam.get(0), isAllyTurn);
-		} else {
+		} else if (!isAllyTurn) {
 			wildPokemonAttack(isAllyTurn);
 		}
-	}
-
-	private void wildPokemonAttack(boolean isAlly) {
-		int moveCount = 0;
-		if (wildPokemon.getPokemonAttack1() != null)
-			moveCount++;
-		if (wildPokemon.getPokemonAttack2() != null)
-			moveCount++;
-		if (wildPokemon.getPokemonAttack3() != null)
-			moveCount++;
-		if (wildPokemon.getPokemonAttack4() != null)
-			moveCount++;
-
-		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(moveCount - 1)), isAlly);
-		turn = !turn;
 	}
 
 	private void setupAttackButtons(Pokemon pokemon, boolean isAlly) {
@@ -183,35 +203,23 @@ public class FightManager {
 			}
 		}
 	}
+	
 
-	private boolean battleEnded() {
-		if (wildPokemon.getPokemonHP() <= 0) {
-			JOptionPane.showMessageDialog(null, "El equipo local ha ganado el combate!!!", "Enhorabuena!!!",
-					JOptionPane.INFORMATION_MESSAGE);
-			StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
+	private void wildPokemonAttack(boolean isAlly) {
+		int moveCount = 0;
+		if (wildPokemon.getPokemonAttack1() != null)
+			moveCount++;
+		if (wildPokemon.getPokemonAttack2() != null)
+			moveCount++;
+		if (wildPokemon.getPokemonAttack3() != null)
+			moveCount++;
+		if (wildPokemon.getPokemonAttack4() != null)
+			moveCount++;
 
-			StatusSingleton.getInstance().getMainWindow().setMainPanel();
-			return true;
-		}
-
-		if (allyPokemonTeam.get(0).getPokemonHP() <= 0) {
-			if (allyPokemonTeam.size() > 1) {
-				allyPokemonTeam.remove(0);
-				fightPanel.changePokemon(allyPokemonTeam);
-				refreshOverlayData(true);
-				turn = !turn;
-			} else {
-				JOptionPane.showMessageDialog(null, "El enemigo ha debilitado a todos tus pokemon...", "GAME OVER",
-						JOptionPane.INFORMATION_MESSAGE);
-				StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
-
-				StatusSingleton.getInstance().getMainWindow().setMainPanel();
-				return true;
-			}
-		}
-		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
-		return false;
+		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(moveCount)), isAlly);
+		turn = !turn;
 	}
+
 
 	/**
 	 * Refresca la pantalla con nueva información de los pokemon.
@@ -239,44 +247,16 @@ public class FightManager {
 		}
 	}
 
-	// ELIMINAR BOOLEAN PARA QUE NO DEPENDA DE SI ES TURNO DEL USUARIO O DEL
-	// POKEMON. ESO SE EMPEZARA A CREAR UN METODO PARA VER QUE MOVIMIENTO ELIGE.
-	private void doDamage(Attack pokemonAttack, boolean ally) {
-		long dealtAttack = 0;
-		Pokemon targetPokemon = null;
-		Pokemon attackingPokemon = null;
-		if (ally) {
-			attackingPokemon = allyPokemonTeam.get(0);
-			targetPokemon = wildPokemon;
-		} else {
-			attackingPokemon = wildPokemon;
-			targetPokemon = allyPokemonTeam.get(0);
-		}
+	private void doDamage(Attack attack, boolean isAlly) {
+		Pokemon attacker = isAlly ? allyPokemonTeam.get(0) : wildPokemon;
+		Pokemon target = isAlly ? wildPokemon : allyPokemonTeam.get(0);
 
-		dealtAttack = calculateAttackDamage(pokemonAttack, targetPokemon, attackingPokemon);
-
-		if (dealtAttack > 0) {
-			calculatePokemonLife(dealtAttack, ally);
-			writeLog(ally, (pokemonAttack.getAttackName() + " ha hecho " + dealtAttack + " de daño! \n"));
+		long damage = calculateAttackDamage(attack, target, attacker);
+		if (damage > 0) {
+			updatePokemonHP(target, damage, isAlly);
+			writeLog(isAlly, attack.getAttackName() + " ha hecho " + damage + " de daño! \n");
 		} else {
-			writeLog(ally, (pokemonAttack.getAttackName() + " ha fallado! \n"));
-		}
-	}
-
-	private void calculatePokemonLife(long dealtAttack, boolean isAlly) {
-		int newHealth = 0;
-		if (isAlly) {
-			newHealth = wildPokemon.getPokemonHP() - (int) dealtAttack;
-			wildPokemon.setPokemonHP(newHealth);
-			fightPanel.enemyPokemonLifeBar.setValue(newHealth);
-			fightPanel.enemyPokemonLifeBar.revalidate();
-			fightPanel.enemyPokemonLifeBar.repaint();
-		} else {
-			newHealth = allyPokemonTeam.get(0).getPokemonHP() - (int) dealtAttack;
-			allyPokemonTeam.get(0).setPokemonHP(newHealth);
-			fightPanel.allyPokemonLifeBar.setValue(newHealth);
-			fightPanel.allyPokemonLifeBar.revalidate();
-			fightPanel.allyPokemonLifeBar.repaint();
+			writeLog(isAlly, attack.getAttackName() + " ha fallado! \n");
 		}
 	}
 
@@ -286,9 +266,31 @@ public class FightManager {
 			return 0;
 
 		long baseDamage = Math.round((((0.2 * attackingPokemon.getPokemonLvl() + 1) * usedAttack.getAttackPotency()
-				* attackingPokemon.getPokemonAttackStat()) / (25 * deffensorPokemon.getPokemonDefense() + 2)));
+				* attackingPokemon.getPokemonAttackStat()) / (40 * deffensorPokemon.getPokemonDefense() + 2)));
 
 		return baseDamage;
+	}
+
+	private void updatePokemonHP(Pokemon target, long damage, boolean isAlly) {
+		int newHealth = Math.max(0, target.getPokemonHP() - (int) damage);
+		target.setPokemonHP(newHealth);
+
+		if (isAlly) {
+			fightPanel.enemyPokemonLifeBar.setValue(newHealth);
+			fightPanel.enemyPokemonLifeBar.repaint();
+		} else {
+			fightPanel.allyPokemonLifeBar.setValue(newHealth);
+			fightPanel.allyPokemonLifeBar.repaint();
+		}
+	}
+
+	private void writeLog(boolean isAlly, String log) {
+		if (isAlly) {
+			fightPanel.textArea.setText("");
+			fightPanel.textArea.append(log);
+		} else {
+			fightPanel.decissionTextLbl.setText(log);
+		}
 	}
 
 	private void handleDefense(boolean isAlly) {
@@ -300,15 +302,5 @@ public class FightManager {
 			wildPokemon.setPokemonDefense(defenseUp);
 		}
 		writeLog(isAlly, "Tu defensa ha aumentado!!! \n");
-	}
-
-	private void writeLog(boolean isAlly, String log) {
-		if (isAlly) {
-			fightPanel.textArea.setText("");
-			fightPanel.textArea.append(log);
-		} else {
-			fightPanel.decissionTextLbl.setText(log);
-		}
-
 	}
 }

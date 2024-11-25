@@ -133,9 +133,7 @@ public class MainPanel extends JPanel implements Runnable {
 			nextDrawTime = nextDrawTime + drawInterval;
 
 		} catch (InterruptedException e) {
-			JOptionPane.showMessageDialog(null, "Ha habido un error en la ejecucion del codigo", "Error",
-					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
+			
 		}
 	}
 
@@ -144,12 +142,8 @@ public class MainPanel extends JPanel implements Runnable {
 	 * se le pase por teclado
 	 */
 	private void update() {
-		try {
 			player.updateSprite();
-		} catch (InterruptedException e) {
-			JOptionPane.showMessageDialog(null, "Error parando el hilo", "Error parando el hilo",
-					JOptionPane.ERROR_MESSAGE);
-		}
+	
 	}
 
 	/**

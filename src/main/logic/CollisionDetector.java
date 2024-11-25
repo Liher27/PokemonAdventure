@@ -14,7 +14,7 @@ public class CollisionDetector {
 		this.gamePanel = gamePanel;
 	}
 
-	public void checkHitBox(Character character) throws InterruptedException {
+	public void checkHitBox(Character character) {
 		// Definimos las distancias de los lados del rectangulo de nuestra hitbox (al
 		// ser el sprite(CharacterWorldX/Y) mayor que nuestra hitbox(charcterHitBox),
 		// tenemos que hacer unos calculos).
@@ -101,11 +101,10 @@ public class CollisionDetector {
 		}
 	}
 
-	private void pokemonAppear() throws InterruptedException {
-		int probability = 2;
+	private void pokemonAppear() {
+		int probability = 1;
 		int encounterRatio = new Random().nextInt(187);
 		if (probability > encounterRatio) {
-			// StatusSingleton.getInstance().getMainPanel().gameThread.suspend();
 			StatusSingleton.getInstance().getMainWindow().setFightPanel();
 		}
 	}

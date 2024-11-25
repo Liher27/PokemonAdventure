@@ -44,28 +44,30 @@ public class MainWindow extends JFrame {
 	}
 
 	public void setMainPanel() {
-		if (null != fightPanel) {
-			fightPanel.setVisible(false);
-			mainPanel.setVisible(true);
-			fightPanel.stopBattle();
-			mainPanel.run();
-		}
+		// Primero, paramos el hilo del combate y ocultamos el panel
+		fightPanel.setVisible(false);
+		fightPanel.stopBattle();
+
+		// despues, mostramos el siguiente panel y reanudamos el hilo
+		mainPanel.setVisible(true);
 	}
 
 	public void setFightPanel() {
 		try {
+			// Si el panel no esta creado, el Manager tampoco lo esta, por lo que deberemos
+			// crear ambos
 			if (null == fightPanel) {
 				fightPanel = new FightPanel();
+				fightPanel.fightManager = new FightManager();
 				add(fightPanel);
 			}
-
+			// Primero, ocultamos un panel, paramos el hilo, y reanudamos el hilo anterior,
+			// y mostramos el panel
 			mainPanel.setVisible(false);
-			mainPanel.exploring = false;
-			fightPanel.fightManager = new FightManager();
 			fightPanel.fightManager.trainerBattle();
-			fightPanel.fightManager.loadInfo();
 			fightPanel.setVisible(true);
 
+			// Para cerrar la ventana
 			addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {
