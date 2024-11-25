@@ -11,7 +11,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SongController {
 
-	public static final String[] songs = { "fights/contents/songs/Black.wav", "fights/contents/songs/Blasco.wav",
+	public final String[] songs = { "fights/contents/songs/Black.wav", "fights/contents/songs/Blasco.wav",
 			"fights/contents/songs/Kanto.wav", "fights/contents/songs/Rayquaza.wav", "fights/contents/songs/Red.wav" };
 
 	private Clip clip = null;

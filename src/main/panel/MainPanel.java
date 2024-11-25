@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 
 import main.logic.CollisionDetector;
 import main.logic.KeyBoard;
-import main.manager.ItemManager;
 import main.manager.PlayerManager;
 import main.manager.TileManager;
 import main.manager.pojos.OverMapEntities;
@@ -31,13 +30,13 @@ public class MainPanel extends JPanel implements Runnable {
 
 	private static final long serialVersionUID = 1L;
 
-	public KeyBoard keyBoard = null;
 	public Thread gameThread = null; // Hilo sobre el cual correra el juego
+
+	public KeyBoard keyBoard = null;
 	public PlayerManager player = null;
 	public TileManager tileManager = null;
 	public CollisionDetector collisionDetector = null;
 	public OverMapEntities objects[] = new OverMapEntities[10];
-	public ItemManager itemSetter = new ItemManager(this);
 	private List<Pokemon> allyPokemonTeam = null;
 	// definir un sprite de 16x16 bloques
 	private final int originalTileSize = 16;
@@ -102,7 +101,6 @@ public class MainPanel extends JPanel implements Runnable {
 	public void run() {
 		exploring = true;
 		while (exploring) {
-
 			// Aquí se ejecutará el bucle principal sobre el que el juego se inicia,
 			// mecanica basica sobre la cual funcionan muchos juegos.
 
@@ -111,7 +109,6 @@ public class MainPanel extends JPanel implements Runnable {
 
 			update();
 			repaint();
-
 			refrescoPantalla();
 		}
 	}
@@ -138,7 +135,7 @@ public class MainPanel extends JPanel implements Runnable {
 		} catch (InterruptedException e) {
 			JOptionPane.showMessageDialog(null, "Ha habido un error en la ejecucion del codigo", "Error",
 					JOptionPane.ERROR_MESSAGE);
-			System.exit(0);
+			e.printStackTrace();
 		}
 	}
 
@@ -152,7 +149,6 @@ public class MainPanel extends JPanel implements Runnable {
 		} catch (InterruptedException e) {
 			JOptionPane.showMessageDialog(null, "Error parando el hilo", "Error parando el hilo",
 					JOptionPane.ERROR_MESSAGE);
-			e.printStackTrace();
 		}
 	}
 

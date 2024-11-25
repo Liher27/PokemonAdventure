@@ -1,7 +1,6 @@
 package main.manager;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -37,9 +36,7 @@ public class PlayerManager extends Character {
 		playerPositionXInPanel = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2; // 360
 		playerPositionYInPanel = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2; // 264
 
-		// Definimos cual va a ser la hitbox de nuestro personaje, o de el pokemon que
-		// nos siga tambien, si se programa...[quien sabe ;)]
-		characterHitBox = new Rectangle(8, 16, 32, 32);
+		// Definimos cual va a ser la hitbox de nuestro personaje
 
 		speed = 4;
 		direction = "down";
@@ -122,7 +119,7 @@ public class PlayerManager extends Character {
 			}
 		}
 
-		warpForSpriteMovement();
+		wrapForSpriteMovement();
 
 	}
 
@@ -130,7 +127,7 @@ public class PlayerManager extends Character {
 	 * para ir cambiando el sprite del personaje: Changer=1, una imagen. Changer=2,
 	 * otra ...
 	 */
-	private void warpForSpriteMovement() {
+	private void wrapForSpriteMovement() {
 
 		if (spriteCounter > 10) {
 			if (spriteChanger == 1) {

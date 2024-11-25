@@ -2,7 +2,6 @@ package pokemonFight.manager;
 
 import java.util.List;
 
-import main.logic.CollisionDetector;
 import main.panel.MainPanel;
 import main.panel.MainWindow;
 import pokemonFight.manager.pojo.Item;
@@ -24,8 +23,6 @@ public class StatusSingleton {
 	private List<Item> allyHeldItems = null;
 	
 	private Pokemon wildPokemon = null;
-
-	private CollisionDetector collisionDetector = null;
 
 	public static StatusSingleton getInstance() {
 		if (null == statusSingleton) {
@@ -72,14 +69,6 @@ public class StatusSingleton {
 
 	public void setFightPanel(FightPanel fightPanel) {
 		this.fightPanel = fightPanel;
-	}
-
-	public CollisionDetector getCollisionDetector() {
-		return collisionDetector;
-	}
-
-	public void setCollisionDetector(CollisionDetector collisionDetector) {
-		this.collisionDetector = collisionDetector;
 	}
 
 	public MainPanel getMainPanel() {

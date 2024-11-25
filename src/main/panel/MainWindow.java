@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import pokemonFight.manager.FightManager;
 import pokemonFight.manager.StatusSingleton;
 import pokemonFight.view.FightPanel;
 
@@ -46,6 +47,8 @@ public class MainWindow extends JFrame {
 		if (null != fightPanel) {
 			fightPanel.setVisible(false);
 			mainPanel.setVisible(true);
+			fightPanel.stopBattle();
+			mainPanel.run();
 		}
 	}
 
@@ -55,8 +58,14 @@ public class MainWindow extends JFrame {
 				fightPanel = new FightPanel();
 				add(fightPanel);
 			}
+
 			mainPanel.setVisible(false);
+			mainPanel.exploring = false;
+			fightPanel.fightManager = new FightManager();
+			fightPanel.fightManager.trainerBattle();
+			fightPanel.fightManager.loadInfo();
 			fightPanel.setVisible(true);
+
 			addWindowListener(new WindowAdapter() {
 				@Override
 				public void windowClosing(WindowEvent e) {

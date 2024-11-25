@@ -33,16 +33,16 @@ public class FightManager {
 	public FightManager() throws IOException {
 		fightPanel = StatusSingleton.getInstance().getFightPanel();
 
-		wildPokemon = new PokemonManager().getPokemons().get(new Random().nextInt(151));
-
 		allyPokemonTeam = StatusSingleton.getInstance().getPokemonTeam();
+
+		wildPokemon = new PokemonManager().getPokemons().get(new Random().nextInt(151));
 
 		turn = allyPokemonTeam.get(0).getPokemonSpeed() >= wildPokemon.getPokemonSpeed();
 
 		StatusSingleton.getInstance().setWildPokemon(wildPokemon);
 	}
 
-	public void loadInfo() throws NullPointerException, IOException, Exception {
+	public void loadInfo() throws NullPointerException, IOException {
 		fightPanel.allyPokemonLifeBar.setMaximum(allyPokemonTeam.get(0).getPokemonHP());
 		fightPanel.allyPokemonLifeBar.setValue(allyPokemonTeam.get(0).getPokemonHP());
 		fightPanel.enemyPokemonLifeBar.setMaximum(wildPokemon.getPokemonHP());
@@ -65,7 +65,7 @@ public class FightManager {
 						continueBattle = false;
 					}
 					try {
-						Thread.sleep(10);
+						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -81,7 +81,6 @@ public class FightManager {
 			fightPanel.decissionTextLbl.setText("¿Qué debería hacer " + allyPokemonTeam.get(0).getPokemonName() + "?");
 			setupAttackButtons(allyPokemonTeam.get(0), isAllyTurn);
 		} else {
-			// Cambiar por ataque random de pokemon salvaje
 			wildPokemonAttack(isAllyTurn);
 		}
 	}
@@ -94,10 +93,10 @@ public class FightManager {
 			moveCount++;
 		if (wildPokemon.getPokemonAttack3() != null)
 			moveCount++;
-		if (wildPokemon.getPokemonAttack3() != null)
+		if (wildPokemon.getPokemonAttack4() != null)
 			moveCount++;
 
-		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(moveCount)), isAlly);
+		doDamage(wildPokemon.getPokemonAttack(new Random().nextInt(moveCount - 1)), isAlly);
 		turn = !turn;
 	}
 
@@ -210,6 +209,7 @@ public class FightManager {
 				return true;
 			}
 		}
+		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
 		return false;
 	}
 
@@ -307,8 +307,7 @@ public class FightManager {
 			fightPanel.textArea.setText("");
 			fightPanel.textArea.append(log);
 		} else {
-			fightPanel.enemyTextArea.setText("");
-			fightPanel.enemyTextArea.append(log);
+			fightPanel.decissionTextLbl.setText(log);
 		}
 
 	}
