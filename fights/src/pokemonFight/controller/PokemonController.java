@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -82,7 +81,7 @@ public class PokemonController extends AttackController {
 		while ((line = bufferedReader.readLine()) != null) {
 			String[] values = line.split(",");
 			String pokemonName = values[0];
-			String pokemonPath = pokemonName.toLowerCase(Locale.ROOT);
+			String pokemonPath = pokemonName.toLowerCase();
 			if (pokemonName.equalsIgnoreCase("Mr. Mime")) {
 				pokemonPath = "mr_mime";
 			} else if (pokemonName.equalsIgnoreCase("Nidoran♀")) {

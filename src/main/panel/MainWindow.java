@@ -47,8 +47,8 @@ public class MainWindow extends JFrame {
 		fightPanel.setVisible(false);
 
 		// despues, mostramos el siguiente panel y reanudamos el hilo
-		mainPanel.setVisible(true);
 		mainPanel.run();
+		mainPanel.setVisible(true);
 	}
 
 	public void setFightPanel() {
