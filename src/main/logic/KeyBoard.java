@@ -12,7 +12,6 @@ public class KeyBoard implements KeyListener {
 	public boolean downPressed = false;
 	public boolean rightPressed = false;
 	public boolean leftPressed = false;
-	public boolean teclaPresionada = false;
 
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -62,5 +61,12 @@ public class KeyBoard implements KeyListener {
 		if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
 			leftPressed = false;
 		}
+	}
+	
+	public void resetKeys() {
+		upPressed = false;
+		downPressed = false;
+		rightPressed = false;
+		leftPressed = false;
 	}
 }

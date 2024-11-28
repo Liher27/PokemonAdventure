@@ -97,9 +97,9 @@ public class MainPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
-		setFocusable(true);
-		requestFocusInWindow();
 		exploring = true;
+		setFocusable(true);
+		requestFocus();
 		while (null != gameThread) {
 			while (exploring) {
 				// Aquí se ejecutará el bucle principal sobre el que el juego se inicia,
@@ -107,7 +107,6 @@ public class MainPanel extends JPanel implements Runnable {
 
 				// Primero se refresca la informacion, y después se pinta la informacion
 				// recogida.
-
 				update();
 				repaint();
 				refrescoPantalla();

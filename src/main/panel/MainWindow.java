@@ -4,6 +4,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -32,6 +34,7 @@ public class MainWindow extends JFrame {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "No se ha podido cargar el panel de aventura correctamente", "Error",
 					JOptionPane.ERROR_MESSAGE);
+			e.printStackTrace();
 			System.exit(0);
 		}
 		pack();
@@ -47,6 +50,7 @@ public class MainWindow extends JFrame {
 		fightPanel.songController.stop();
 		// despues, mostramos el siguiente panel y reanudamos el hilo
 		mainPanel.setVisible(true);
+		mainPanel.keyBoard.resetKeys();
 		mainPanel.run();
 	}
 
@@ -62,7 +66,7 @@ public class MainWindow extends JFrame {
 			mainPanel.setVisible(false);
 
 			fightPanel.fightManager.trainerBattle();
-			fightPanel.songController.resumeMusic();
+			fightPanel.songController.playRandomSong();
 			fightPanel.setVisible(true);
 
 			// Para cerrar la ventana
@@ -73,7 +77,7 @@ public class MainWindow extends JFrame {
 					System.exit(0);
 				}
 			});
-		} catch (IOException e) {
+		} catch (IOException | LineUnavailableException | UnsupportedAudioFileException e) {
 			JOptionPane.showMessageDialog(null, "No se ha podido cargar el panel de combate", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();

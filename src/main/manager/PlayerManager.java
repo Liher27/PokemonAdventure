@@ -2,6 +2,7 @@ package main.manager;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -49,18 +50,18 @@ public class PlayerManager extends Character {
 	 * @throws IOException
 	 */
 	public void getPlayerImage() throws IOException {
-		redStill = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStill.png"));
-		redMovesDown1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMoves1.png"));
-		redMovesDown2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMoves2.png"));
-		redStillLeft = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillLeft.png"));
-		redMovesLeft = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesLeft.png"));
-		redStillRight = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillRight.png"));
-		redMovesRight = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesRight.png"));
-		redStillUp = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redStillUp.png"));
-		redMovesUp1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesUp1.png"));
-		redMovesUp2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/redMovesUp2.png"));
-		waterPokemon1 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/waterPokemon1.png"));
-		waterPokemon2 = ImageIO.read(getClass().getResourceAsStream("/sprites/player/waterPokemon2.png"));
+		redStill = ImageIO.read(new File("contents/sprites/player/redStill.png"));
+		redMovesDown1 = ImageIO.read(new File("contents/sprites/player/redMoves1.png"));
+		redMovesDown2 = ImageIO.read(new File("contents/sprites/player/redMoves2.png"));
+		redStillLeft = ImageIO.read(new File("contents/sprites/player/redStillLeft.png"));
+		redMovesLeft = ImageIO.read(new File("contents/sprites/player/redMovesLeft.png"));
+		redStillRight = ImageIO.read(new File("contents/sprites/player/redStillRight.png"));
+		redMovesRight = ImageIO.read(new File("contents/sprites/player/redMovesRight.png"));
+		redStillUp = ImageIO.read(new File("contents/sprites/player/redStillUp.png"));
+		redMovesUp1 = ImageIO.read(new File("contents/sprites/player/redMovesUp1.png"));
+		redMovesUp2 = ImageIO.read(new File("contents/sprites/player/redMovesUp2.png"));
+		waterPokemon1 = ImageIO.read(new File("contents/sprites/player/waterPokemon1.png"));
+		waterPokemon2 = ImageIO.read(new File("contents/sprites/player/waterPokemon2.png"));
 	}
 
 	/**
@@ -106,7 +107,9 @@ public class PlayerManager extends Character {
 				}
 			}
 		}
+
 		wrapForSpriteMovement();
+
 	}
 
 	/**

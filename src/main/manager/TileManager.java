@@ -46,7 +46,7 @@ public class TileManager extends Tile {
 	 */
 	private HashMap<Integer, Tile> loadTileImages() throws IOException {
 		HashMap<Integer, Tile> ret = new HashMap<>();
-		File tilesInfoFile = new File("src/sprites/map/tileInfo.csv");
+		File tilesInfoFile = new File("contents/sprites/map/tileInfo.csv");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(tilesInfoFile));
 		String line = null;
 		while ((line = bufferedReader.readLine()) != null) {
@@ -56,7 +56,7 @@ public class TileManager extends Tile {
 			String tileCollission = values[2];
 			String tileGrass = values[3];
 			Tile tile = new Tile();
-			tile.image = ImageIO.read(getClass().getResourceAsStream("/sprites/tiles/" + tileName + ".png"));
+			tile.image = ImageIO.read(new File("contents/sprites/tiles/" + tileName + ".png"));
 			tile.collision = Boolean.parseBoolean(tileCollission);
 			tile.grass = Boolean.parseBoolean(tileGrass);
 			ret.put(Integer.parseInt(tileIndex), tile);
@@ -74,7 +74,7 @@ public class TileManager extends Tile {
 	 * @throws IOException
 	 */
 	private void loadMap() throws IOException {
-		File map = new File("src/sprites/map/worldMap.csv");
+		File map = new File("contents/sprites/map/worldMap.csv");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(map));
 
 		for (int worldRow = 0; worldRow < gamePanel.maxWorldRow; worldRow++) {
