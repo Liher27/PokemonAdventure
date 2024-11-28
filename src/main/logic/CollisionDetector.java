@@ -53,8 +53,7 @@ public class CollisionDetector {
 						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).collision == true) {
 					character.collisioned = true;
 				}
-				if (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
-						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true) {
+				if (checkForCombat(tileNum1, tileNum2)) {
 					pokemonAppear();
 				}
 				break;
@@ -66,8 +65,7 @@ public class CollisionDetector {
 						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).collision == true) {
 					character.collisioned = true;
 				}
-				if (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
-						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true) {
+				if (checkForCombat(tileNum1, tileNum2)) {
 					pokemonAppear();
 				}
 				break;
@@ -79,8 +77,7 @@ public class CollisionDetector {
 						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).collision == true) {
 					character.collisioned = true;
 				}
-				if (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
-						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true) {
+				if (checkForCombat(tileNum1, tileNum2)) {
 					pokemonAppear();
 				}
 				break;
@@ -92,13 +89,18 @@ public class CollisionDetector {
 						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).collision == true) {
 					character.collisioned = true;
 				}
-				if (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
-						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true) {
+				if (checkForCombat(tileNum1, tileNum2)) {
 					pokemonAppear();
 				}
 				break;
 			}
 		}
+	}
+
+	private boolean checkForCombat(int tileNum1, int tileNum2) {
+		return (StatusSingleton.getInstance().getPokemonTeam().size() > 0
+				&& (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
+						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true));
 	}
 
 	private void pokemonAppear() {

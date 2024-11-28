@@ -29,7 +29,7 @@ public class FightManager {
 	private FightPanel fightPanel = null;
 
 	private Pokemon wildPokemon = null;
-	
+
 	public FightManager() throws IOException {
 		fightPanel = StatusSingleton.getInstance().getFightPanel();
 
@@ -78,18 +78,19 @@ public class FightManager {
 				return null;
 			}
 		};
-		
+
 		battleWorker.execute();
 	}
 
 	private boolean battleEnded() {
+
+		boolean ret = false;
 		if (wildPokemon.getPokemonHP() <= 0) {
 			JOptionPane.showMessageDialog(null, "El equipo local ha ganado el combate!!!", "Enhorabuena!!!",
 					JOptionPane.INFORMATION_MESSAGE);
-			StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
 
 			StatusSingleton.getInstance().getMainWindow().setMainPanel();
-			return true;
+			ret = true;
 		}
 
 		if (allyPokemonTeam.get(0).getPokemonHP() <= 0) {
@@ -99,17 +100,19 @@ public class FightManager {
 				refreshOverlayData(true);
 				turn = !turn;
 			} else {
-				JOptionPane.showMessageDialog(null, "El enemigo ha debilitado a todos tus pokemon...", "GAME OVER",
+				JOptionPane.showMessageDialog(null,
+						"El enemigo ha debilitado a todos tus pokemon, No podras entrar mas en combate...", "GAME OVER",
 						JOptionPane.INFORMATION_MESSAGE);
-				StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
+
+				allyPokemonTeam.remove(0);
 
 				StatusSingleton.getInstance().getMainWindow().setMainPanel();
 
-				return true;
+				ret = true;
 			}
 		}
 		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
-		return false;
+		return ret;
 	}
 
 	private void handleTurn(boolean isAllyTurn) {

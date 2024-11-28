@@ -61,14 +61,15 @@ public class MainWindow extends JFrame {
 				fightPanel = new FightPanel();
 				add(fightPanel);
 			}
-			// Primero, paramos el hilo, ocultamos el panel de aventura, ejecutamos la logica de combate y de musica, y mostramos el panel
+
+			// Primero, paramos el hilo, ocultamos el panel de aventura, ejecutamos la
+			// logica de combate y de musica, y mostramos el panel
 			mainPanel.exploring = false;
 			mainPanel.setVisible(false);
 
 			fightPanel.fightManager.trainerBattle();
 			fightPanel.songController.playRandomSong();
 			fightPanel.setVisible(true);
-
 			// Para cerrar la ventana
 			addWindowListener(new WindowAdapter() {
 				@Override
