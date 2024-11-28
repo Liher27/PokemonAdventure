@@ -11,17 +11,20 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SongController {
 
-	public final String[] songs = { "fights/contents/songs/Black.wav", "fights/contents/songs/Blasco.wav",
+	private final String[] songs = { "fights/contents/songs/Black.wav", "fights/contents/songs/Blasco.wav",
 			"fights/contents/songs/Kanto.wav", "fights/contents/songs/Rayquaza.wav", "fights/contents/songs/Red.wav" };
 
 	private Clip clip = null;
 
-	
-	public static void playMusic(String location)
-			throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+	public void playRandomSong() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
+		int randomIndex = new Random().nextInt(songs.length);
+		playMusic(songs[randomIndex]);
+	}
+
+	public void playMusic(String location) throws LineUnavailableException, UnsupportedAudioFileException, IOException {
 		File musicPath = new File(location);
 		AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(musicPath);
-		Clip clip = AudioSystem.getClip();
+		clip = AudioSystem.getClip();
 		clip.open(audioInputStream);
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 		clip.start();
@@ -32,11 +35,11 @@ public class SongController {
 			clip.stop();
 			clip.setFramePosition(0);
 		}
+
 	}
 
-	public void playRandomSong() throws LineUnavailableException, UnsupportedAudioFileException, IOException {
-		Random random = new Random();
-		int randomIndex = random.nextInt(songs.length);
-		playMusic(songs[randomIndex]);
+	public void resumeMusic() {
+		if (clip != null)
+			clip.start();
 	}
 }

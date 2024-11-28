@@ -270,7 +270,7 @@ public class FightPanel extends JPanel {
 		setPreferredSize(new Dimension(800, 600));
 
 		if (!StatusSingleton.getInstance().getPokemonTeam().isEmpty()) {
-
+			fightManager = new FightManager();
 			try {
 				songController = new SongController();
 				songController.playRandomSong();

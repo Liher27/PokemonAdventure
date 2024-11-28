@@ -71,13 +71,13 @@ public class MainPanel extends JPanel implements Runnable {
 		player = new PlayerManager(keyBoard, this);
 		tileManager = new TileManager(this);
 		collisionDetector = new CollisionDetector(this);
-		allyPokemonTeam = selectTeamPokemons("Escoge los pokemon para tu equipo");
+		allyPokemonTeam = selectTeamPokemons("Escoge los pokemon para tu equip	o");
 		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
 
-		this.setPreferredSize(new Dimension(800, 600));
-		this.setBackground(Color.white);
-		this.setDoubleBuffered(true); // opcional, es para un mejor renderizado de los graficos del panel
-		this.addKeyListener(keyBoard);
+		setPreferredSize(new Dimension(800, 600));
+		setBackground(Color.white);
+		setDoubleBuffered(true); // opcional, es para un mejor renderizado de los graficos del panel
+		addKeyListener(keyBoard);
 		StatusSingleton.getInstance().setMainPanel(this);
 
 		startGameThread();
@@ -97,8 +97,8 @@ public class MainPanel extends JPanel implements Runnable {
 	 */
 	@Override
 	public void run() {
-		this.setFocusable(true);
-		this.requestFocusInWindow();
+		setFocusable(true);
+		requestFocusInWindow();
 		exploring = true;
 		while (null != gameThread) {
 			while (exploring) {

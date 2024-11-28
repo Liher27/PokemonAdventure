@@ -7,7 +7,6 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import pokemonFight.manager.FightManager;
 import pokemonFight.manager.StatusSingleton;
 import pokemonFight.view.FightPanel;
 
@@ -45,27 +44,25 @@ public class MainWindow extends JFrame {
 	public void setMainPanel() {
 		// Primero, paramos el hilo del combate y ocultamos el panel
 		fightPanel.setVisible(false);
-
+		fightPanel.songController.stop();
 		// despues, mostramos el siguiente panel y reanudamos el hilo
-		mainPanel.run();
 		mainPanel.setVisible(true);
+		mainPanel.run();
 	}
 
 	public void setFightPanel() {
 		try {
-			// Si el panel no esta creado, el Manager tampoco lo esta, por lo que deberemos
-			// crear ambos
+			// Si el panel no esta creado, lo deberemos crear
 			if (null == fightPanel) {
 				fightPanel = new FightPanel();
-				fightPanel.fightManager = new FightManager();
 				add(fightPanel);
 			}
-			// Primero, ocultamos un panel, paramos el hilo, y reanudamos el hilo anterior,
-			// y mostramos el panel
+			// Primero, paramos el hilo, ocultamos el panel de aventura, ejecutamos la logica de combate y de musica, y mostramos el panel
 			mainPanel.exploring = false;
 			mainPanel.setVisible(false);
-			
+
 			fightPanel.fightManager.trainerBattle();
+			fightPanel.songController.resumeMusic();
 			fightPanel.setVisible(true);
 
 			// Para cerrar la ventana
