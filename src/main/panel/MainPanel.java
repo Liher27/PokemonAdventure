@@ -71,8 +71,6 @@ public class MainPanel extends JPanel implements Runnable {
 		player = new PlayerManager(keyBoard, this);
 		tileManager = new TileManager(this);
 		collisionDetector = new CollisionDetector(this);
-		allyPokemonTeam = selectTeamPokemons("Escoge los pokemon para tu equip	o");
-		StatusSingleton.getInstance().setPokemonTeam(allyPokemonTeam);
 
 		setPreferredSize(new Dimension(800, 600));
 		setBackground(Color.white);

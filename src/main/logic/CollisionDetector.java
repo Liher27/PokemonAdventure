@@ -98,7 +98,7 @@ public class CollisionDetector {
 	}
 
 	private boolean checkForCombat(int tileNum1, int tileNum2) {
-		return (StatusSingleton.getInstance().getPokemonTeam().size() > 0
+		return ((null != StatusSingleton.getInstance().getPokemonTeam())
 				&& (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
 						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true));
 	}

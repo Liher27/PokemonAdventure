@@ -11,12 +11,14 @@ import javax.imageio.ImageIO;
 
 import main.manager.pojos.Tile;
 import main.panel.MainPanel;
+import pokemonFight.manager.StatusSingleton;
 
 public class TileManager extends Tile {
 
 	private MainPanel gamePanel;
 	public int[][] mapCoords;
 	public HashMap<Integer, Tile> tileImagesMap;
+	private File map = null;
 
 	/**
 	 * Constructor de la clase
@@ -74,7 +76,8 @@ public class TileManager extends Tile {
 	 * @throws IOException
 	 */
 	private void loadMap() throws IOException {
-		File map = new File("contents/sprites/map/worldMap.csv");
+		setMap();
+		map = new File("contents/sprites/map/worldMap.csv");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(map));
 
 		for (int worldRow = 0; worldRow < gamePanel.maxWorldRow; worldRow++) {
@@ -88,6 +91,14 @@ public class TileManager extends Tile {
 		}
 		bufferedReader.close();
 
+	}
+
+	public void setMap() {
+		if (null == StatusSingleton.getInstance().getPokemonTeam()) {
+			map = new File("contents/sprites/map/example.csv");
+		} else {
+			map = new File("contents/sprites/map/worldMap.csv");
+		}
 	}
 
 	/**

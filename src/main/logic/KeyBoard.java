@@ -2,6 +2,9 @@ package main.logic;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+
+import pokemonFight.manager.StatusSingleton;
 
 /**
  * Clase utilizada para recibir la informacion que se le pasa por teclado
@@ -38,6 +41,13 @@ public class KeyBoard implements KeyListener {
 		if (code == KeyEvent.VK_A || code == KeyEvent.VK_LEFT) {
 			leftPressed = true;
 		}
+		if (code == KeyEvent.VK_T) {
+			try {
+				StatusSingleton.getInstance().setPokemonTeam(
+						StatusSingleton.getInstance().getMainPanel().selectTeamPokemons("Selecciona tu equipo!"));
+			} catch (IOException e1) {
+			}
+		}
 	}
 
 	/**
@@ -62,7 +72,7 @@ public class KeyBoard implements KeyListener {
 			leftPressed = false;
 		}
 	}
-	
+
 	public void resetKeys() {
 		upPressed = false;
 		downPressed = false;
