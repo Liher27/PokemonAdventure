@@ -3,7 +3,7 @@
 2,water,true,false
 3,waterBorderRight,true,false
 4,waterBorderUp,true,false
-5,whiteWithGrass,false,true
+5,whiteWithGrass,false,false
 6,pOakStill,true,false
 7,house,true,false
 8,waterCornerRightUp,true,false
@@ -11,3 +11,9 @@
 10,frame,true,false
 11,grass,false,true
 12,whiteFloor,false,false
+13,flower2,false,true
+14,ground,false,false
+15,waterBorderLeft,true,false
+16,waterCornerLeftDown,true,false
+17,waterBorderDown,true,false
+18,waterCornerRightDown,true,false

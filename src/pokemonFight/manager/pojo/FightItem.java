@@ -2,13 +2,13 @@ package pokemonFight.manager.pojo;
 
 import java.util.Objects;
 
-public class Item {
+public class FightItem {
 
 	private String itemName = null;
 	private int itemHealing = 0;
 	private int itemCharges = 0;
 	
-	public Item(String itemName, int itemHealing, int itemCharges) {
+	public FightItem(String itemName, int itemHealing, int itemCharges) {
 		this.itemName = itemName;
 		this.itemHealing =itemHealing;
 		this.itemCharges = itemCharges;
@@ -51,7 +51,7 @@ public class Item {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Item other = (Item) obj;
+		FightItem other = (FightItem) obj;
 		return itemCharges == other.itemCharges && itemHealing == other.itemHealing
 				&& Objects.equals(itemName, other.itemName);
 	}

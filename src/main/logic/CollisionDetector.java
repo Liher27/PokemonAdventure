@@ -19,12 +19,12 @@ public class CollisionDetector {
 		// ser el sprite(CharacterWorldX/Y) mayor que nuestra hitbox(charcterHitBox),
 		// tenemos que hacer unos calculos).
 
-		int hitBoxLeftSideXCoord = character.entityWorldX + character.getCharacterHitbox().x;
-		int hitBoxRightSideXCoord = character.entityWorldX + character.getCharacterHitbox().x
-				+ character.getCharacterHitbox().width;
-		int hitBoxTopSideYCoord = character.entityWorldY + character.getCharacterHitbox().y;
-		int hitBoxBottomSideYCoord = character.entityWorldY + character.getCharacterHitbox().y
-				+ character.getCharacterHitbox().height;
+		int hitBoxLeftSideXCoord = character.entityWorldX + character.characterHitBox.x;
+		int hitBoxRightSideXCoord = character.entityWorldX + character.characterHitBox.x
+				+ character.characterHitBox.width;
+		int hitBoxTopSideYCoord = character.entityWorldY + character.characterHitBox.y;
+		int hitBoxBottomSideYCoord = character.entityWorldY + character.characterHitBox.y
+				+ character.characterHitBox.height;
 
 		// una vez obtenidos los valores de nuestra hitbox, calcularemos donde esta
 		// nuestro caracter en los terminos de columna y linea del mapa

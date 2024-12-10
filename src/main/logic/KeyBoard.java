@@ -42,10 +42,13 @@ public class KeyBoard implements KeyListener {
 			leftPressed = true;
 		}
 		if (code == KeyEvent.VK_T) {
-			try {
-				StatusSingleton.getInstance().setPokemonTeam(
-						StatusSingleton.getInstance().getMainPanel().selectTeamPokemons("Selecciona tu equipo!"));
-			} catch (IOException e1) {
+			if (null == StatusSingleton.getInstance().getPokemonTeam()) {
+				try {
+					StatusSingleton.getInstance().setPokemonTeam(
+							StatusSingleton.getInstance().getMainPanel().selectTeamPokemons("Selecciona tu equipo!"));
+//					StatusSingleton.getInstance().getMainPanel().tileManager.loadMap();
+				} catch (IOException e1) {
+				}
 			}
 		}
 	}

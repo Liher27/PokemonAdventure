@@ -4,7 +4,7 @@ import java.util.List;
 
 import main.panel.MainPanel;
 import main.panel.MainWindow;
-import pokemonFight.manager.pojo.Item;
+import pokemonFight.manager.pojo.FightItem;
 import pokemonFight.manager.pojo.Pokemon;
 import pokemonFight.view.FightPanel;
 
@@ -20,7 +20,7 @@ public class StatusSingleton {
 
 	private List<Pokemon> pokemonTeam = null;
 	
-	private List<Item> allyHeldItems = null;
+	private List<FightItem> allyHeldItems = null;
 	
 	private Pokemon wildPokemon = null;
 
@@ -51,11 +51,11 @@ public class StatusSingleton {
 		this.pokemonTeam = pokemonTeam;
 	}
 
-	public List<Item> getAllyHeldItems() {
+	public List<FightItem> getAllyHeldItems() {
 		return allyHeldItems;
 	}
 
-	public void setAllyHeldItems(List<Item> allyHeldItems) {
+	public void setAllyHeldItems(List<FightItem> allyHeldItems) {
 		this.allyHeldItems = allyHeldItems;
 	}
 

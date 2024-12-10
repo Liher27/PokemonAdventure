@@ -17,8 +17,8 @@ public class PlayerManager extends Character {
 
 	private MainPanel gamePanel = null;
 
-	public final int playerPositionXInPanel;
-	public final int playerPositionYInPanel;
+	public int playerPositionXInPanel;
+	public int playerPositionYInPanel;
 
 	/**
 	 * Constructor de la clase
@@ -55,8 +55,10 @@ public class PlayerManager extends Character {
 		redMovesDown2 = ImageIO.read(new File("contents/sprites/player/redMoves2.png"));
 		redStillLeft = ImageIO.read(new File("contents/sprites/player/redStillLeft.png"));
 		redMovesLeft = ImageIO.read(new File("contents/sprites/player/redMovesLeft.png"));
+		redMovesLeft2 = ImageIO.read(new File("contents/sprites/player/redMovesLeft2.png"));
 		redStillRight = ImageIO.read(new File("contents/sprites/player/redStillRight.png"));
 		redMovesRight = ImageIO.read(new File("contents/sprites/player/redMovesRight.png"));
+		redMovesRight2 = ImageIO.read(new File("contents/sprites/player/redMovesRight2.png"));
 		redStillUp = ImageIO.read(new File("contents/sprites/player/redStillUp.png"));
 		redMovesUp1 = ImageIO.read(new File("contents/sprites/player/redMovesUp1.png"));
 		redMovesUp2 = ImageIO.read(new File("contents/sprites/player/redMovesUp2.png"));
@@ -182,7 +184,7 @@ public class PlayerManager extends Character {
 					sprite = redMovesLeft;
 				}
 				if (spriteChanger == 3) {
-					sprite = redMovesLeft;
+					sprite = redMovesLeft2;
 				}
 				break;
 			case "right":
@@ -193,13 +195,12 @@ public class PlayerManager extends Character {
 					sprite = redMovesRight;
 				}
 				if (spriteChanger == 3) {
-					sprite = redMovesRight;
+					sprite = redMovesRight2;
 				}
 				break;
 
 			}
 		}
-		graphics2D.drawImage(sprite, playerPositionXInPanel, playerPositionYInPanel, gamePanel.tileSize,
-				gamePanel.tileSize, null);
+		graphics2D.drawImage(sprite, playerPositionXInPanel, playerPositionYInPanel, 60, 67, null);
 	}
 }

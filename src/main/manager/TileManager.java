@@ -75,9 +75,8 @@ public class TileManager extends Tile {
 	 * 
 	 * @throws IOException
 	 */
-	private void loadMap() throws IOException {
-		setMap();
-		map = new File("contents/sprites/map/worldMap.csv");
+	public void loadMap() throws IOException {
+		map = new File("contents/sprites/map/newWorldMap.csv");
 		BufferedReader bufferedReader = new BufferedReader(new FileReader(map));
 
 		for (int worldRow = 0; worldRow < gamePanel.maxWorldRow; worldRow++) {
@@ -93,7 +92,7 @@ public class TileManager extends Tile {
 
 	}
 
-	public void setMap() {
+	private void setMap() {
 		if (null == StatusSingleton.getInstance().getPokemonTeam()) {
 			map = new File("contents/sprites/map/example.csv");
 		} else {

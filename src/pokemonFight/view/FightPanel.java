@@ -54,8 +54,6 @@ public class FightPanel extends JPanel {
 
 	public JTextArea textArea = null;
 
-	public JTextArea enemyTextArea = null;
-
 	public JProgressBar allyPokemonLifeBar = null;
 	public JProgressBar enemyPokemonLifeBar = null;
 
@@ -78,13 +76,6 @@ public class FightPanel extends JPanel {
 		textArea.setForeground(new Color(107, 142, 35));
 		textArea.setBounds(10, 126, 210, 50);
 		add(textArea);
-
-		enemyTextArea = new JTextArea();
-		enemyTextArea.setOpaque(false);
-		enemyTextArea.setEditable(false);
-		enemyTextArea.setForeground(new Color(128, 0, 32));
-		enemyTextArea.setBounds(570, 40, 210, 50);
-		add(enemyTextArea);
 
 		enemyLvlLbl = new JLabel();
 		enemyLvlLbl.setFont(new Font("Tahoma", Font.PLAIN, 15));

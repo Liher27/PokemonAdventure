@@ -15,8 +15,10 @@ public class Character extends OverMapEntities {
 	public BufferedImage redMovesDown2 = null;
 	public BufferedImage redStillLeft = null;
 	public BufferedImage redMovesLeft = null;
+	public BufferedImage redMovesLeft2 = null;
 	public BufferedImage redStillRight = null;
 	public BufferedImage redMovesRight = null;
+	public BufferedImage redMovesRight2 = null;
 	public BufferedImage redStillUp = null;
 	public BufferedImage redMovesUp1 = null;
 	public BufferedImage redMovesUp2 = null;
@@ -28,11 +30,6 @@ public class Character extends OverMapEntities {
 	public int spriteCounter = 0;
 
 	public int spriteChanger = 1;
-
-	// La hitbox de nuestro personaje, definida como un rectangulo mas pequeño que
-	// el sprite del mismo, para poder ser un poco mas permisivos a la hora de
-	// chocar contra algun objeto
-	public Rectangle characterHitBox = new Rectangle(8, 16, 32, 32);
 
 	public int getSpeed() {
 		return speed;
@@ -80,6 +77,14 @@ public class Character extends OverMapEntities {
 
 	public void setRedMovesLeft(BufferedImage redMovesLeft) {
 		this.redMovesLeft = redMovesLeft;
+	}
+
+	public BufferedImage getRedMovesLeft2() {
+		return redMovesLeft2;
+	}
+
+	public void setRedMovesLeft2(BufferedImage redMovesLeft2) {
+		this.redMovesLeft2 = redMovesLeft2;
 	}
 
 	public BufferedImage getRedStillRight() {
@@ -133,6 +138,14 @@ public class Character extends OverMapEntities {
 	public BufferedImage getWaterPokemon2() {
 		return waterPokemon2;
 	}
+	
+	public BufferedImage getRedMovesRight2() {
+		return redMovesRight2;
+	}
+
+	public void setRedMovesRight2(BufferedImage redMovesRight2) {
+		this.redMovesRight2 = redMovesRight2;
+	}
 
 	public void setWaterPokemon2(BufferedImage waterPokemon2) {
 		this.waterPokemon2 = waterPokemon2;
@@ -149,7 +162,7 @@ public class Character extends OverMapEntities {
 	public int getSpriteCounter() {
 		return spriteCounter;
 	}
-
+	
 	public void setSpriteCounter(int spriteCounter) {
 		this.spriteCounter = spriteCounter;
 	}
@@ -160,14 +173,6 @@ public class Character extends OverMapEntities {
 
 	public void setSpriteChanger(int spriteChanger) {
 		this.spriteChanger = spriteChanger;
-	}
-
-	public Rectangle getCharacterHitbox() {
-		return characterHitBox;
-	}
-
-	public void setCharacterHitbox(Rectangle characterHitbox) {
-		this.characterHitBox = characterHitbox;
 	}
 
 }

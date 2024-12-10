@@ -26,6 +26,8 @@ public class FightManager {
 
 	public List<Pokemon> allyPokemonTeam = null;
 
+	private boolean pokemonIsDamaged = false;
+
 	private FightPanel fightPanel = null;
 
 	private Pokemon wildPokemon = null;
@@ -45,7 +47,8 @@ public class FightManager {
 	}
 
 	public void loadInfo() throws NullPointerException, IOException {
-		fightPanel.allyPokemonLifeBar.setMaximum(allyPokemonTeam.get(0).getPokemonHP());
+		if (!pokemonIsDamaged)
+			fightPanel.allyPokemonLifeBar.setMaximum(allyPokemonTeam.get(0).getPokemonHP());
 		fightPanel.allyPokemonLifeBar.setValue(allyPokemonTeam.get(0).getPokemonHP());
 		fightPanel.enemyPokemonLifeBar.setMaximum(wildPokemon.getPokemonHP());
 		fightPanel.enemyPokemonLifeBar.setValue(wildPokemon.getPokemonHP());
@@ -98,6 +101,7 @@ public class FightManager {
 				allyPokemonTeam.remove(0);
 				fightPanel.changePokemon(allyPokemonTeam);
 				refreshOverlayData(true);
+				pokemonIsDamaged = false;
 				turn = !turn;
 			} else {
 				JOptionPane.showMessageDialog(null,
@@ -119,6 +123,7 @@ public class FightManager {
 		if (isAllyTurn) {
 			fightPanel.decissionTextLbl.setText("¿Qué debería hacer " + allyPokemonTeam.get(0).getPokemonName() + "?");
 			setupAttackButtons(allyPokemonTeam.get(0), isAllyTurn);
+			pokemonIsDamaged = true;
 		} else if (!isAllyTurn) {
 			wildPokemonAttack(isAllyTurn);
 		}
