@@ -4,3 +4,4 @@ Programa para jugar un videojuego basado en pokemon. Este juego combina dos de m
 ## Controles
 El personaje se controla tanto con W,A,S,D, como con las flechas direccionales.
 Por otra parte, los combates se controlan con el ratón.
+Deberás añadir pokémon a tu equipo para poder iniciar combates. Podrás añadir los pokemon deseados con la tecla T.
