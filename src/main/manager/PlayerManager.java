@@ -31,16 +31,16 @@ public class PlayerManager extends Character {
 
 		this.gamePanel = gamePanel;
 
+		//Para colocar a nuestro personaje en esas coordenadas (en este caso, 10/9)
 		entityWorldX = gamePanel.tileSize * 10;
 		entityWorldY = gamePanel.tileSize * 9;
 
+		//Para colocar la camara en el centro de la pantalla
 		playerPositionXInPanel = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
 		playerPositionYInPanel = gamePanel.screenHeight / 2 - gamePanel.tileSize / 2;
 
 		// Definimos cual va a ser la hitbox de nuestro personaje
 		speed = 4;
-		direction = "down";
-
 		getPlayerImage();
 	}
 

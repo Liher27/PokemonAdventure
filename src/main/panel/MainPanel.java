@@ -16,10 +16,11 @@ import javax.swing.JPanel;
 
 import main.logic.CollisionDetector;
 import main.logic.KeyBoard;
-import main.manager.ItemManager;
+import main.manager.AssetsManager;
 import main.manager.PlayerManager;
 import main.manager.TileManager;
 import main.manager.pojos.Item;
+import main.manager.pojos.OverMapEntities;
 import pokemonFight.manager.PokemonManager;
 import pokemonFight.manager.StatusSingleton;
 import pokemonFight.manager.pojo.Pokemon;
@@ -36,9 +37,10 @@ public class MainPanel extends JPanel implements Runnable {
 	public KeyBoard keyBoard = null;
 	public PlayerManager player = null;
 	public TileManager tileManager = null;
-	public ItemManager itemManager = null;
+	public AssetsManager assetsManager = null;
 	public CollisionDetector collisionDetector = null;
-	public Item items[] = new Item[10];
+	public List<OverMapEntities> assets = null;
+	public List<Item> items = null;
 	// definir un sprite de 16x16 bloques
 	private final int originalTileSize = 16;
 	public boolean exploring = false;
@@ -71,14 +73,17 @@ public class MainPanel extends JPanel implements Runnable {
 		keyBoard = new KeyBoard();
 		player = new PlayerManager(keyBoard, this);
 		tileManager = new TileManager(this);
-		itemManager = new ItemManager(this);
+		assetsManager = new AssetsManager(this);
 		collisionDetector = new CollisionDetector(this);
+		items = new ArrayList<Item>();
+		assets = new ArrayList<OverMapEntities>();
 
 		setPreferredSize(new Dimension(800, 600));
 		setBackground(Color.white);
 		setDoubleBuffered(true); // opcional, es para un mejor renderizado de los graficos del panel
 		addKeyListener(keyBoard);
-		itemManager.setItems();
+		assetsManager.setItems();
+		assetsManager.setAssets();
 		StatusSingleton.getInstance().setMainPanel(this);
 
 		startGameThread();
@@ -157,10 +162,11 @@ public class MainPanel extends JPanel implements Runnable {
 
 		Graphics2D graphics2D = (Graphics2D) graphics;
 		tileManager.drawTiles(graphics2D);
-		for (int i = 0; i < items.length; i++) {
-			if (null != items[i]) {
-				itemManager.drawItems(graphics2D, items[i]);
-			}
+		for (int i = 0; i < items.size(); i++) {
+			assetsManager.drawItems(graphics2D, items.get(i));
+		}
+		for (int i = 0; i < assets.size(); i++) {
+			assetsManager.drawAssets(graphics2D, assets.get(i));
 		}
 		player.draw(graphics2D);
 		graphics2D.dispose();

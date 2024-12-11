@@ -1,6 +1,5 @@
 package main.manager.pojos;
 
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -138,7 +137,7 @@ public class Character extends OverMapEntities {
 	public BufferedImage getWaterPokemon2() {
 		return waterPokemon2;
 	}
-	
+
 	public BufferedImage getRedMovesRight2() {
 		return redMovesRight2;
 	}
@@ -162,7 +161,7 @@ public class Character extends OverMapEntities {
 	public int getSpriteCounter() {
 		return spriteCounter;
 	}
-	
+
 	public void setSpriteCounter(int spriteCounter) {
 		this.spriteCounter = spriteCounter;
 	}
