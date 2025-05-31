@@ -47,8 +47,8 @@ public class CollisionDetector {
 			switch (character.direction) {
 			case "up":
 				characterTopRow = (hitBoxTopSideYCoord - character.speed) / gamePanel.tileSize;
-				tileNum1 = gamePanel.tileManager.mapCoords[characterLeftCol][characterTopRow];
-				tileNum2 = gamePanel.tileManager.mapCoords[characterRightCol][characterTopRow];
+				tileNum1 = gamePanel.loader.tileManager.mapCoords[characterLeftCol][characterTopRow];
+				tileNum2 = gamePanel.loader.tileManager.mapCoords[characterRightCol][characterTopRow];
 				if (collisionDetected(tileNum1, tileNum2)) {
 					character.collisioned = true;
 				}
@@ -58,8 +58,8 @@ public class CollisionDetector {
 				break;
 			case "down":
 				characterBottomRow = (hitBoxBottomSideYCoord + character.speed) / gamePanel.tileSize;
-				tileNum1 = gamePanel.tileManager.mapCoords[characterLeftCol][characterBottomRow];
-				tileNum2 = gamePanel.tileManager.mapCoords[characterRightCol][characterBottomRow];
+				tileNum1 = gamePanel.loader.tileManager.mapCoords[characterLeftCol][characterBottomRow];
+				tileNum2 = gamePanel.loader.tileManager.mapCoords[characterRightCol][characterBottomRow];
 				if (collisionDetected(tileNum1, tileNum2)) {
 					character.collisioned = true;
 				}
@@ -69,8 +69,8 @@ public class CollisionDetector {
 				break;
 			case "left":
 				characterLeftCol = (hitBoxLeftSideXCoord - character.speed) / gamePanel.tileSize;
-				tileNum1 = gamePanel.tileManager.mapCoords[characterLeftCol][characterTopRow];
-				tileNum2 = gamePanel.tileManager.mapCoords[characterLeftCol][characterBottomRow];
+				tileNum1 = gamePanel.loader.tileManager.mapCoords[characterLeftCol][characterTopRow];
+				tileNum2 = gamePanel.loader.tileManager.mapCoords[characterLeftCol][characterBottomRow];
 				if (collisionDetected(tileNum1, tileNum2)) {
 					character.collisioned = true;
 				}
@@ -80,8 +80,8 @@ public class CollisionDetector {
 				break;
 			case "right":
 				characterRightCol = (hitBoxRightSideXCoord + character.speed) / gamePanel.tileSize;
-				tileNum1 = gamePanel.tileManager.mapCoords[characterRightCol][characterTopRow];
-				tileNum2 = gamePanel.tileManager.mapCoords[characterRightCol][characterBottomRow];
+				tileNum1 = gamePanel.loader.tileManager.mapCoords[characterRightCol][characterTopRow];
+				tileNum2 = gamePanel.loader.tileManager.mapCoords[characterRightCol][characterBottomRow];
 				if (collisionDetected(tileNum1, tileNum2)) {
 					character.collisioned = true;
 				}
@@ -94,14 +94,16 @@ public class CollisionDetector {
 	}
 
 	private boolean checkForCombat(int tileNum1, int tileNum2) {
-		return ((null != StatusSingleton.getInstance().getPokemonTeam())
-				&& (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
-						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true));
+		return false;
+//		return ((null != StatusSingleton.getInstance().getPokemonTeam())
+//				&& (gamePanel.tileManager.tileImagesMap.get(tileNum1).grass == true
+//						|| gamePanel.tileManager.tileImagesMap.get(tileNum2).grass == true));
 	}
 
 	private boolean collisionDetected(int tileNum1, int tileNum2) {
-		return (gamePanel.tileManager.tileImagesMap.get(tileNum1).collision == true
-				|| gamePanel.tileManager.tileImagesMap.get(tileNum2).collision == true);
+		return false;
+//		return (gamePanel.tileManager.tileImagesMap.get(tileNum1).collision == true
+//				|| gamePanel.tileManager.tileImagesMap.get(tileNum2).collision == true);
 	}
 
 	private void pokemonAppear() {

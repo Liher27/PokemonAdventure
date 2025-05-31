@@ -31,7 +31,7 @@ public class MainWindow extends JFrame {
 		try {
 			mainPanel = new MainPanel();
 			add(mainPanel);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No se ha podido cargar el panel de aventura correctamente", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			e.printStackTrace();

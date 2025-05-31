@@ -1,36 +1,39 @@
 package main.manager;
 
 import java.awt.Graphics2D;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
 
-import javax.imageio.ImageIO;
+import org.mapeditor.core.Map;
+import org.mapeditor.core.Tile;
+import org.mapeditor.core.MapLayer;
+import org.mapeditor.core.TileLayer;
+import org.mapeditor.io.TMXMapReader;
 
-import main.manager.pojos.Tile;
 import main.panel.MainPanel;
-import pokemonFight.manager.StatusSingleton;
 
 public class TileManager extends Tile {
 
 	private MainPanel gamePanel;
 	public int[][] mapCoords;
-	public HashMap<Integer, Tile> tileImagesMap;
-	private File map = null;
+	private TMXMapReader mapReader = null;
+	private Map map = null;
+	private int screenTileWidth = 0;
+	private int screenTileHeight = 0;
 
 	/**
 	 * Constructor de la clase
 	 * 
 	 * @param gamePanel
-	 * @throws IOException
+	 * @throws Exception
 	 */
-	public TileManager(MainPanel gamePanel) throws IOException {
+	public TileManager(MainPanel gamePanel) throws Exception {
 		this.gamePanel = gamePanel;
 		this.mapCoords = new int[gamePanel.maxWorldColumn][gamePanel.maxWorldRow];
-		this.tileImagesMap = loadTileImages();
-		loadMap();
+		
+		mapReader = new TMXMapReader();
+		map = mapReader.readMap("contents/sprites/map/worldMap.tmx");
+
+		screenTileWidth = gamePanel.screenWidth / gamePanel.tileSize;
+		screenTileHeight = gamePanel.screenHeight / gamePanel.tileSize;
 	}
 
 	/**
@@ -46,61 +49,12 @@ public class TileManager extends Tile {
 	 * 
 	 * @throws IOException
 	 */
-	private HashMap<Integer, Tile> loadTileImages() throws IOException {
-		HashMap<Integer, Tile> ret = new HashMap<>();
-		File tilesInfoFile = new File("contents/sprites/map/tileInfo.csv");
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(tilesInfoFile));
-		String line = null;
-		while ((line = bufferedReader.readLine()) != null) {
-			String[] values = line.split(",");
-			String tileIndex = values[0];
-			String tileName = values[1];
-			String tileCollission = values[2];
-			String tileGrass = values[3];
-			Tile tile = new Tile();
-			tile.image = ImageIO.read(new File("contents/sprites/tiles/" + tileName + ".png"));
-			tile.collision = Boolean.parseBoolean(tileCollission);
-			tile.grass = Boolean.parseBoolean(tileGrass);
-			ret.put(Integer.parseInt(tileIndex), tile);
-		}
-		bufferedReader.close();
-
-		return ret;
-	}
 
 	/**
 	 * Método usado para leer el fichero de texto del mapa, en el que cada numero es
 	 * un bloque del array tipo tile. lee columna a columna, y una vez llega al
 	 * final de la columna pasa a la siguiente fila...
 	 * 
-	 * @throws IOException
-	 */
-	public void loadMap() throws IOException {
-		map = new File("contents/sprites/map/newWorldMap.csv");
-		BufferedReader bufferedReader = new BufferedReader(new FileReader(map));
-
-		for (int worldRow = 0; worldRow < gamePanel.maxWorldRow; worldRow++) {
-			String mapCoord = bufferedReader.readLine();
-			String[] mapInfo = mapCoord.split(",");
-
-			for (int worldColumn = 0; worldColumn < gamePanel.maxWorldColumn; worldColumn++) {
-				int mapNumber = Integer.parseInt(mapInfo[worldColumn]);
-				mapCoords[worldColumn][worldRow] = mapNumber;
-			}
-		}
-		bufferedReader.close();
-
-	}
-
-	private void setMap() {
-		if (null == StatusSingleton.getInstance().getPokemonTeam()) {
-			map = new File("contents/sprites/map/example.csv");
-		} else {
-			map = new File("contents/sprites/map/worldMap.csv");
-		}
-	}
-
-	/**
 	 * Metodo para dibujar los bloques en el mapa del fichero de texto, dependiendo
 	 * del valor asignado en el fichero se le otrga una imagen u otra del array de
 	 * tiles. continua igual que el anterior metodo
@@ -108,20 +62,39 @@ public class TileManager extends Tile {
 	 * @param graphics2D
 	 */
 	public void drawTiles(Graphics2D graphics2D) {
-		for (int worldRow = 0; worldRow < gamePanel.maxWorldRow; worldRow++) {
-			for (int worldColumn = 0; worldColumn < gamePanel.maxWorldColumn; worldColumn++) {
+		int playerOffsetX = gamePanel.player.entityWorldX - gamePanel.player.playerPositionXInPanel;
+		int playerOffsetY = gamePanel.player.entityWorldY - gamePanel.player.playerPositionYInPanel;
+
+		int startCol = Math.max(0, playerOffsetX / gamePanel.tileSize);
+		int endCol = Math.min(gamePanel.maxWorldColumn - 1, startCol + screenTileWidth + 1);
+
+		int startRow = Math.max(0, playerOffsetY / gamePanel.tileSize);
+		int endRow = Math.min(gamePanel.maxWorldRow - 1, startRow + screenTileHeight + 1);
+
+		for (MapLayer mapLayer : map.getLayers()) {
+			if (mapLayer instanceof TileLayer) {
+				TileLayer tileLayer = (TileLayer) mapLayer;
+				drawLayer(graphics2D, tileLayer, startRow, endRow, startCol, endCol, playerOffsetX, playerOffsetY);
+			}
+		}
+	}
+
+	private void drawLayer(Graphics2D g, TileLayer layer, int startRow, int endRow, int startCol, int endCol,
+			int offsetX, int offsetY) {
+		for (int worldRow = startRow; worldRow <= endRow; worldRow++) {
+			for (int worldColumn = startCol; worldColumn <= endCol; worldColumn++) {
 
 				int worldX = worldColumn * gamePanel.tileSize;
 				int worldY = worldRow * gamePanel.tileSize;
-				int screenX = worldX - gamePanel.player.entityWorldX + gamePanel.player.playerPositionXInPanel;
-				int screenY = worldY - gamePanel.player.entityWorldY + gamePanel.player.playerPositionYInPanel;
+				int screenX = worldX - offsetX;
+				int screenY = worldY - offsetY;
 
-				int tileImageIndex = mapCoords[worldColumn][worldRow];
-				Tile tile = tileImagesMap.get(tileImageIndex);
+				Tile tile = layer.getTileAt(worldColumn, worldRow);
 				if (tile != null) {
-					graphics2D.drawImage(tile.image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
+					g.drawImage(tile.getImage(), screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
 				}
 			}
 		}
 	}
+
 }

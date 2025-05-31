@@ -15,8 +15,6 @@ public class PlayerManager extends Character {
 
 	private KeyBoard keyBoard = null;
 
-	private MainPanel gamePanel = null;
-
 	public int playerPositionXInPanel;
 	public int playerPositionYInPanel;
 
@@ -29,11 +27,9 @@ public class PlayerManager extends Character {
 	public PlayerManager(KeyBoard keyBoard, MainPanel gamePanel) throws IOException {
 		this.keyBoard = keyBoard;
 
-		this.gamePanel = gamePanel;
-
 		//Para colocar a nuestro personaje en esas coordenadas (en este caso, 10/9)
-		entityWorldX = gamePanel.tileSize * 10;
-		entityWorldY = gamePanel.tileSize * 9;
+		entityWorldX = gamePanel.tileSize * 193;
+		entityWorldY = gamePanel.tileSize * 88;
 
 		//Para colocar la camara en el centro de la pantalla
 		playerPositionXInPanel = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
@@ -88,7 +84,7 @@ public class PlayerManager extends Character {
 		// pasamos el Player, que es una clase hija de Character, por lo que en el
 		// metodo podra operar con el player
 		collisioned = false;
-		gamePanel.collisionDetector.checkHitBox(this);
+//		gamePanel.collisionDetector.checkHitBox(this);
 
 		// Hacemos que solo se pueda mover si el personaje no ha colisionado
 		if (direction != null) {

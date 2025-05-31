@@ -14,13 +14,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import main.logic.CollisionDetector;
+//import main.logic.CollisionDetector;
 import main.logic.KeyBoard;
-import main.manager.AssetsManager;
+import main.logic.LoadingAssets;
 import main.manager.PlayerManager;
 import main.manager.TileManager;
-import main.manager.pojos.Item;
-import main.manager.pojos.OverMapEntities;
 import pokemonFight.manager.PokemonManager;
 import pokemonFight.manager.StatusSingleton;
 import pokemonFight.manager.pojo.Pokemon;
@@ -36,28 +34,27 @@ public class MainPanel extends JPanel implements Runnable {
 
 	public KeyBoard keyBoard = null;
 	public PlayerManager player = null;
-	public TileManager tileManager = null;
-	public AssetsManager assetsManager = null;
-	public CollisionDetector collisionDetector = null;
-	public List<OverMapEntities> assets = null;
-	public List<Item> items = null;
+	public LoadingAssets loader = null;
+	
 	// definir un sprite de 16x16 bloques
 	private final int originalTileSize = 16;
+	private final int playerTileSize = 18;
 	public boolean exploring = false;
 
 	// tamaño de escalada para los bloques de sprites, ya que un sprite de 16x16
 	// se vería demasiado pequeño en las pantallas de 1920x1080
 	private final int scale = 3;
 	public final int tileSize = originalTileSize * scale;// tamaño escalado
+	public final int playerSize = playerTileSize * scale;//Tamaño del jugado escalado
 
 	// Resolución de la pantalla, 4:3 en este caso.
 	public final int maxScreenColumn = 16;
-	public final int maxScreenRow = 12;
+	public final int maxScreenRow = 14;
 	public final int screenWidth = tileSize * maxScreenColumn; // Para que los 16 bloques ocupen en total 760 pixeles
 	public final int screenHeight = tileSize * maxScreenRow; // Para que los 12 bloques originales ocupen 576 pixeles
 
-	public final int maxWorldColumn = 100;
-	public final int maxWorldRow = 100;
+	public final int maxWorldColumn = 200;
+	public final int maxWorldRow = 200;
 	public final int worldScreenWidth = tileSize * maxWorldColumn;
 	public final int worldScreenHeight = tileSize * maxWorldRow;
 
@@ -69,32 +66,31 @@ public class MainPanel extends JPanel implements Runnable {
 	 * 
 	 * @throws IOException
 	 */
-	public MainPanel() throws IOException {
+	public MainPanel() throws Exception {
 		keyBoard = new KeyBoard();
 		player = new PlayerManager(keyBoard, this);
-		tileManager = new TileManager(this);
-		assetsManager = new AssetsManager(this);
-		collisionDetector = new CollisionDetector(this);
-		items = new ArrayList<Item>();
-		assets = new ArrayList<OverMapEntities>();
+		loader = new LoadingAssets();
 
-		setPreferredSize(new Dimension(800, 600));
+		setPreferredSize(new Dimension(800, 700));
 		setBackground(Color.white);
-		setDoubleBuffered(true); // opcional, es para un mejor renderizado de los graficos del panel
+		setDoubleBuffered(true);
 		addKeyListener(keyBoard);
-		assetsManager.setItems();
-		assetsManager.setAssets();
 		StatusSingleton.getInstance().setMainPanel(this);
 
+		//Para modular un poco el codigo, he decidido separar la carga de contenido a otra clase
+		loader.loadAssests();
 		startGameThread();
 	}
 
 	/**
 	 * Crea el hilo y se inicia
+	 * 
+	 * @throws Exception
 	 */
-	public void startGameThread() {
+	public void startGameThread() throws Exception {
 		// instanciar el hilo
 		gameThread = new Thread(this);
+
 		gameThread.start();
 	}
 
@@ -125,22 +121,18 @@ public class MainPanel extends JPanel implements Runnable {
 	 * refrescaria millones de veces por segundo
 	 */
 	private void refrescoPantalla() {
-		double drawInterval = 1000000000 / FPS;
-		double nextDrawTime = System.nanoTime() + drawInterval;
+		double drawInterval = 1000000000.0 / FPS;
+		long lastTime = System.nanoTime();
 
-		try {
-			double remainingTime = nextDrawTime - System.nanoTime();
-			remainingTime = remainingTime / 1000000;
+		while (gameThread != null) {
+			long now = System.nanoTime();
+			double delta = (now - lastTime) / drawInterval;
 
-			if (remainingTime < 0) {
-				remainingTime = 0;
+			if (delta >= 1) {
+				update();
+				repaint();
+				lastTime = now;
 			}
-
-			Thread.sleep((long) remainingTime);
-			nextDrawTime = nextDrawTime + drawInterval;
-
-		} catch (InterruptedException e) {
-
 		}
 	}
 
@@ -161,63 +153,9 @@ public class MainPanel extends JPanel implements Runnable {
 		super.paintComponent(graphics);
 
 		Graphics2D graphics2D = (Graphics2D) graphics;
-		tileManager.drawTiles(graphics2D);
-		for (int i = 0; i < items.size(); i++) {
-			assetsManager.drawItems(graphics2D, items.get(i));
-		}
-		for (int i = 0; i < assets.size(); i++) {
-			assetsManager.drawAssets(graphics2D, assets.get(i));
-		}
+		if (null != loader.tileManager)
+			loader.tileManager.drawTiles(graphics2D);
 		player.draw(graphics2D);
 		graphics2D.dispose();
-	}
-
-	/**
-	 * metodo inicial para seleccionar los pokemon
-	 * 
-	 * @param message
-	 * @return equipo inicial para el combate
-	 * @throws IOException
-	 */
-	public List<Pokemon> selectTeamPokemons(String message) throws IOException {
-		JOptionPane.showMessageDialog(null, message, "Bienvenido!!", JOptionPane.INFORMATION_MESSAGE);
-		List<Pokemon> selectablePokemon = new PokemonManager().getPokemons();
-		String selectablePokemonNames = null;
-
-		JPanel panel = new JPanel();
-		panel.add(new JLabel("Selecciona un Pokémon:"));
-
-		DefaultComboBoxModel<String> comboBoxModel = new DefaultComboBoxModel<String>();
-		for (int i = 0; i < selectablePokemon.size(); i++) {
-			selectablePokemonNames = selectablePokemon.get(i).getPokemonName();
-			comboBoxModel.addElement(selectablePokemonNames);
-		}
-
-		JComboBox<String> comboBox = new JComboBox<>();
-		comboBox.setModel(comboBoxModel);
-		panel.add(comboBox);
-
-		List<Pokemon> selectedPokemons = new ArrayList<>();
-
-		for (int i = 0; i < 6; i++) {
-			int result = JOptionPane.showConfirmDialog(null, panel, "Seleccionar Pokémon",
-					JOptionPane.OK_CANCEL_OPTION);
-
-			if (result == 0) {
-				int selectedIndex = comboBox.getSelectedIndex();
-				if (selectedIndex != -1) {
-					Pokemon cloningPokemon = selectablePokemon.get(selectedIndex);
-					selectedPokemons.add(new Pokemon(cloningPokemon.getPokemonLvl(), cloningPokemon.getPokemonHP(),
-							cloningPokemon.getPokemonSpeed(), cloningPokemon.getPokemonDefense(),
-							cloningPokemon.getPokemonAttackStat(), cloningPokemon.getPokemonName(),
-							cloningPokemon.getPokemonAttack1(), cloningPokemon.getPokemonAttack2(),
-							cloningPokemon.getPokemonAttack3(), cloningPokemon.getPokemonAttack4(),
-							cloningPokemon.getPokemonFront(), cloningPokemon.getPokemonBack()));
-				}
-			} else {
-				break;
-			}
-		}
-		return selectedPokemons;
 	}
 }
